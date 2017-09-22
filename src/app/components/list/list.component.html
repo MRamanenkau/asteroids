@@ -1,0 +1,44 @@
+<div class="asteroids-list">
+  <h1>Near Earth Objects List</h1>
+
+  <div class="list-controls">
+    Filter by name <input type="text" [(ngModel)]="filterName"> <br>
+    Filter by ID <input type="text" [(ngModel)]="filterID">
+    <p><i>Filtering works only for current page</i></p>
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Is it dangerous?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let asteroid of asteroids | asteroidName:filterName | asteroidID:filterID"
+          [routerLink]="['/details', asteroid.neo_reference_id]">
+        <td>
+          {{asteroid.neo_reference_id}}
+        </td>
+        <td>
+          {{asteroid.name}}
+        </td>
+        <td>
+          {{asteroid.is_potentially_hazardous_asteroid}}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="text-center">
+    <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" (pageChange)="pageChange()"
+                    [maxSize]="5" [rotate]="true" [boundaryLinks]="true" [disabled]="isLoadInProgress"
+                    class="d-inline-block">
+    </ngb-pagination>
+  </div>
+
+  <div *ngIf="isLoadInProgress" class="content-blocker">
+    <span>Loading...</span>
+  </div>
+</div>
